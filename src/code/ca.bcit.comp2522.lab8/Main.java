@@ -5,8 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Main
@@ -26,9 +27,9 @@ public class Main
     public static void main(String[] args)
     {
         final Path countriesPath;
-        List<String> countries;
         final Path matches;
         final Path data;
+        List<String> countries;
 
         // Read a text file named "week8countries.txt",
         countriesPath = Paths.get("week8countries.txt");
@@ -79,12 +80,12 @@ public class Main
         try
         {
             Files.writeString(data,
-                    "1. Country names longer than " + LONG_COUNTRY_LEN + " characters:\n",
+                    "Country names longer than " + LONG_COUNTRY_LEN + " characters:\n",
                     StandardOpenOption.APPEND);
 
             final List<String> longCountryNames;
 
-            longCountryNames = countries.stream()
+            longCountryNames = filteredStream(countries)
                     .filter(country -> country.length() > LONG_COUNTRY_LEN)
                     .toList();
 
@@ -101,12 +102,12 @@ public class Main
         try
         {
             Files.writeString(data,
-                    "\n2. Country names shorter than " + SHORT_COUNTRY_LEN + " characters:\n",
+                    "Country names shorter than " + SHORT_COUNTRY_LEN + " characters:\n",
                     StandardOpenOption.APPEND);
 
             final List<String> shortCountryNames;
 
-            shortCountryNames = countries.stream()
+            shortCountryNames = filteredStream(countries)
                     .filter(country -> country.length() < SHORT_COUNTRY_LEN)
                     .toList();
 
@@ -123,7 +124,7 @@ public class Main
         try
         {
             Files.writeString(data,
-                    "\n3. Country names that start with '" + FIRST_CHAR + "':\n",
+                    "Country names starting with '" + FIRST_CHAR + "':\n",
                     StandardOpenOption.APPEND);
 
             final List<String> countryNamesStartWithA;
@@ -487,6 +488,7 @@ public class Main
 
     private static Stream<String> filteredStream(final List<String> strings)
     {
-        return strings.stream().filter(Objects::nonNull);
+        return strings.stream()
+                .filter(s -> s != null);
     }
 }
