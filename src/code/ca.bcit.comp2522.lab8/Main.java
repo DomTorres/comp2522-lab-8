@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class Main
 {
     private static final String DIR_NAME = "matches";
+
+    private static final int LONG_COUNTRY_LEN = 10;
+    private static final int SHORT_COUNTRY_LEN = 5;
+
 
     public static void main(String[] args)
     {
@@ -62,6 +67,48 @@ public class Main
             e.printStackTrace();
         }
 
+        // 1. Long Country Names
+        try
+        {
+            Files.writeString(data,
+                    "Country names longer than " + LONG_COUNTRY_LEN + " characters:",
+                    StandardOpenOption.APPEND);
 
+            final List<String> longCountryNames;
+
+            longCountryNames = countries.stream()
+                    .filter(country -> country.length() > LONG_COUNTRY_LEN)
+                    .toList();
+
+            Files.write(data,
+                    longCountryNames,
+                    StandardOpenOption.APPEND);
+        }
+        catch(final IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        // 2. Short Country Names
+        try
+        {
+            Files.writeString(data,
+                    "Country names shorter than " + SHORT_COUNTRY_LEN + " characters:",
+                    StandardOpenOption.APPEND);
+
+            final List<String> shortCountryNames;
+
+            shortCountryNames = countries.stream()
+                    .filter(country -> country.length() < SHORT_COUNTRY_LEN)
+                    .toList();
+
+            Files.write(data,
+                    shortCountryNames,
+                    StandardOpenOption.APPEND);
+        }
+        catch(final IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
