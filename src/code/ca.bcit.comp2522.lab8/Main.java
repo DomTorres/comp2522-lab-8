@@ -24,13 +24,15 @@ public class Main
     private static final int MIN_LENGTH = 3;
 
 
-    public static void main(String[] args)
+    public static void main(final String[] args)
     {
         final Path countriesPath;
         final Path matches;
         final Path data;
-        List<String> countries;
+         List<String> countries;
 
+
+         countries  = null;
         // Read a text file named "week8countries.txt",
         countriesPath = Paths.get("week8countries.txt");
 
@@ -65,7 +67,6 @@ public class Main
         }
 
         // Read the File: Read all lines from "countries.txt" into a list.
-        countries = null;
 
         try
         {
@@ -74,6 +75,7 @@ public class Main
         catch(final IOException e)
         {
             e.printStackTrace();
+
         }
 
         // 1. Long Country Names
